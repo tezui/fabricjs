@@ -2,630 +2,267 @@
 <html>
 
 <head>
-    <!-- fabric.js kütüphanesini yüklüyoruz -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.6.0/fabric.min.js"></script>
-    <!-- bootstrap kütüphanesini yüklüyoruz -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- font awesome kütüphanesini yüklüyoruz -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- spectrum kütüphanesini yüklüyoruz -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
-    <!-- cropper kütüphanesini yüklüyoruz -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    <!-- editör için kendi stillerimizi tanımlıyoruz -->
-    <style>
-        #canvas-container {
-            position: relative;
-            width: 800px;
-            height: 600px;
-            margin: 10px auto;
-            border: 1px solid black;
-        }
-
-        #c {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #toolbar {
-            width: 800px;
-            margin: 10px auto;
-        }
-
-        #toolbar button {
-            margin: 5px;
-        }
-
-        #toolbar input,
-        #toolbar select {
-            display: none;
-        }
-
-        #modal-crop {
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-crop .modal-dialog {
-            max-width: 800px;
-        }
-
-        #modal-crop .modal-content {
-            position: relative;
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-crop .modal-body {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        #modal-crop .cropper-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        #modal-crop .cropper-view-box {
-            border-radius: 0 !important;
-        }
-
-        #modal-crop .cropper-drag-box {
-            background-color: transparent !important;
-        }
-
-        #modal-crop .modal-footer {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            height: 50px;
-        }
-
-        #modal-crop .modal-footer button {
-            margin: 5px;
-        }
-
-        #modal-draw {
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-draw .modal-dialog {
-            max-width: 800px;
-        }
-
-        #modal-draw .modal-content {
-            position: relative;
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-draw .modal-body {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        #modal-draw #d {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #modal-draw .modal-footer {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            height: 50px;
-        }
-
-        #modal-draw .modal-footer button {
-            margin: 5px;
-        }
-
-        #modal-draw .modal-footer input {
-            margin: 5px;
-        }
-
-        #modal-text {
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-text .modal-dialog {
-            max-width: 800px;
-        }
-
-        #modal-text .modal-content {
-            position: relative;
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-text .modal-body {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        #modal-text #t {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #modal-text .modal-footer {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            height: 50px;
-        }
-
-        #modal-text .modal-footer button {
-            margin: 5px;
-        }
-
-        #modal-text .modal-footer input {
-            margin: 5px;
-        }
-
-        #modal-text .modal-footer select {
-            margin: 5px;
-        }
-
-        #modal-shape {
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-shape .modal-dialog {
-            max-width: 800px;
-        }
-
-        #modal-shape .modal-content {
-            position: relative;
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-shape .modal-body {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        #modal-shape #s {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #modal-shape .modal-footer {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            height: 50px;
-        }
-
-        #modal-shape .modal-footer button {
-            margin: 5px;
-        }
-
-        #modal-shape .modal-footer input {
-            margin: 5px;
-        }
-
-        #modal-shape .modal-footer select {
-            margin: 5px;
-        }
-
-        #modal-sticker {
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-sticker .modal-dialog {
-            max-width: 800px;
-        }
-
-        #modal-sticker .modal-content {
-            position: relative;
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-sticker .modal-body {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0;
-            overflow: auto;
-        }
-
-        #modal-sticker .modal-body img {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-            cursor: pointer;
-        }
-
-        #modal-sticker .modal-footer {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            height: 50px;
-        }
-
-        #modal-sticker .modal-footer button {
-            margin: 5px;
-        }
-
-        #modal-sticker .modal-footer input {
-            margin: 5px;
-        }
-
-        #modal-icon {
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-icon .modal-dialog {
-            max-width: 800px;
-        }
-
-        #modal-icon .modal-content {
-            position: relative;
-            width: 800px;
-            height: 600px;
-        }
-
-        #modal-icon .modal-body {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            padding: 0;
-            overflow: auto;
-        }
-
-        #modal-icon .modal-body i {
-            font-size: 100px;
-            margin: 10px;
-            cursor: pointer;
-        }
-
-        #modal-icon .modal-footer {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            height: 50px;
-        }
-
-        #modal-icon .modal-footer button {
-            margin: 5px;
-        }
-
-        #modal-icon .modal-footer input {
-            margin: 5px;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.0/fabric.min.js">
+    </script>
 </head>
 
 <body>
-    <!-- canvas elementi oluşturuyoruz -->
-    <div id="canvas-container">
-    </div>
-    <!-- araç çubuğu elementi oluşturuyoruz -->
-    <div id="toolbar" class="btn-group" role="group" aria-label="Basic example">
-        <!-- metin ekleme butonu -->
-        <button id="add-text" type="button" class="btn btn-secondary">Add Text</button>
-        <!-- resim ekleme butonu -->
-        <button id="add-image" type="button" class="btn btn-secondary">Add Image</button>
-        <!-- dosya seçme elementi -->
+    <h1 style="color: green;">
+        Fabric.Js
+    </h1>
+    <h3>
+        Textbox editable Property
+    </h3>
+    <div class="add-text" id="addText">Add Text</div>
+    <div id="canvasContainer">
+        <!-- metin boyutu seçme elementi oluşturuyoruz -->
+        <input id="text-size" type="number" value="40" min="10" max="100">
+        <canvas id="canvas" width="600" height="300" style="border:1px solid #000000">
+        </canvas>
+        <!-- resim ekleme butonu oluşturuyoruz -->
+        <button id="add-image" type="button">Add Image</button>
+        <!-- dosya seçme elementi oluşturuyoruz -->
         <input type="file" id="file" hidden>
-        <!-- renk seçme elementi -->
-        <input type="color" id="color" hidden>
-        <!-- font seçme elementi -->
-        <select id="font" hidden>
-            <option value="Arial">Arial</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Comic Sans MS">Comic Sans MS</option>
-        </select>
-        <!-- font boyutu seçme elementi -->
-        <input type="number" id="size" hidden>
-        <!-- kalın yazma butonu -->
-        <button id="bold" type="button" class="btn btn-secondary">B</button>
-        <!-- italik yazma butonu -->
-        <button id="italic" type="button" class="btn btn-secondary">I</button>
-        <!-- altı çizili yazma butonu -->
-        <button id="underline" type="button" class="btn btn-secondary">U</button>
-        <!-- silme butonu -->
-        <button id="delete" type="button" class="btn btn-secondary">Delete</button>
-        <!-- indirme butonu -->
-        <button id="download" type="button" class="btn btn-secondary">Download</button>
-    </div>
-    <script>
-        // canvas elementini fabric.Canvas nesnesine dönüştürüyoruz
-        var canvas = new fabric.Canvas('c');
-        // araç çubuğu elementini seçiyoruz
-        var toolbar = document.getElementById('toolbar');
-        // metin ekleme butonunu seçiyoruz
-        var addText = document.getElementById('add-text');
-        // resim ekleme butonunu seçiyoruz
-        var addImage = document.getElementById('add-image');
-        // dosya seçme elementini seçiyoruz
-        var file = document.getElementById('file');
-        // renk seçme elementini seçiyoruz
-        var color = document.getElementById('color');
-        // font seçme elementini seçiyoruz
-        var font = document.getElementById('font');
-        // font boyutu seçme elementini seçiyoruz
-        var size = document.getElementById('size');
-        // kalın yazma butonunu seçiyoruz
-        var bold = document.getElementById('bold');
-        // italik yazma butonunu seçiyoruz
-        var italic = document.getElementById('italic');
-        // altı çizili yazma butonunu seçiyoruz
-        var underline = document.getElementById('underline');
-        // silme butonunu seçiyoruz
-        var deleteBtn = document.getElementById('delete');
-        // indirme butonunu seçiyoruz
-        var download = document.getElementById('download');
-        // aktif nesneyi tutacak bir değişken tanımlıyoruz
-        var activeObject = null;
-        // metin ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
-        addText.onclick = function () {
-            // yeni bir fabric.Text nesnesi oluşturuyoruz
-            var text = new fabric.Text('Hello', {
-                left: 100,
-                top: 100,
-                fontFamily: 'Arial',
-                fontSize: 20,
-                fill: 'black'
+        <!-- daire ekleme butonu oluşturuyoruz -->
+        <button id="add-circle" type="button">Add Circle</button>
+        <!-- kare ekleme butonu oluşturuyoruz -->
+        <button id="add-square" type="button">Add Square</button>
+        <!-- elips ekleme butonu oluşturuyoruz -->
+        <button id="add-ellipse" type="button">Add Ellipse</button>
+        <!-- yıldız ekleme butonu oluşturuyoruz -->
+        <button id="add-star" type="button">Add Star</button>
+        <!-- dikdörtgen ekleme butonu oluşturuyoruz -->
+        <button id="add-rectangle" type="button">Add Rectangle</button>
+        <!-- çokgen ekleme butonu oluşturuyoruz -->
+        <button id="add-polygon" type="button">Add Polygon</button>
+        <script>
+            // Initiate a Canvas instance 
+            var canvas = new fabric.Canvas("canvas");
+
+            // Create new Textbox instances 
+            var textEditable = new fabric.Textbox(
+                'Editable Textbox', {
+                width: 500,
+                editable: true
             });
-            // bu nesneyi canvas'a ekliyoruz
-            canvas.add(text);
-            // bu nesneyi aktif nesne olarak seçiyoruz
-            canvas.setActiveObject(text);
-        };
-        // resim ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
-        addImage.onclick = function () {
-            // dosya seçme elementini otomatik olarak tetikliyoruz
-            file.click();
-        };
-        // dosya seçme elementinin değeri değiştiğinde çalışacak fonksiyonu tanımlıyoruz
-        file.onchange = function (e) {
-            // seçilen ilk dosyayı alıyoruz
-            var file = e.target.files[0];
-            // bir FileReader nesnesi oluşturuyoruz
-            var reader = new FileReader();
-            // dosya okunduğunda çalışacak fonksiyonu tanımlıyoruz
-            reader.onload = function (f) {
-                // dosyanın içeriğini bir data URL olarak alıyoruz
-                var data = f.target.result;
-                // data URL'den bir fabric.Image nesnesi oluşturuyoruz
-                fabric.Image.fromURL(data, function (img) {
-                    // resmi canvas üzerinde gösteriyoruz
-                    canvas.add(img);
-                    // resmi aktif nesne olarak seçiyoruz
-                    canvas.setActiveObject(img);
-                });
-                // dosya seçme elementinin değerini sıfırlıyoruz
-                file.value = null;
+
+            var textNonEditable = new fabric.Textbox(
+                'Non Editable Textbox', {
+                width: 500,
+                editable: false
+            });
+
+            // Render the Textbox in canvas 
+            canvas.add(textEditable);
+            canvas.add(textNonEditable);
+
+            canvas.centerObject(textNonEditable);
+            canvas.centerObjectH(textEditable);
+
+            // resim ekleme butonunu seçiyoruz
+            var addImage = document.getElementById('add-image');
+            // dosya seçme elementini seçiyoruz
+            var file = document.getElementById('file');
+            // resim ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
+            addImage.onclick = function () {
+                // dosya seçme elementini otomatik olarak tetikliyoruz
+                file.click();
             };
-            // dosyayı okuyoruz
-            reader.readAsDataURL(file);
-        };
-        // canvas üzerinde bir nesne seçildiğinde çalışacak fonksiyonu tanımlıyoruz
-        canvas.on('object:selected', function (e) {
-            // seçilen nesneyi bir activeObject değişkenine atıyoruz
-            activeObject = e.target;
-            // seçilen nesne bir metin nesnesi ise
-            if (activeObject.type === 'text') {
-                // renk seçme elementinin değerini, seçilen metnin rengi ile güncelliyoruz
-                color.value = activeObject.fill;
-                // font seçme elementinin değerini, seçilen metnin fontu ile güncelliyoruz
-                font.value = activeObject.fontFamily;
-                // font boyutu seçme elementinin değerini, seçilen metnin font boyutu ile güncelliyoruz
-                size.value = activeObject.fontSize;
-                // kalın yazma butonunun arka plan rengini, seçilen metin kalın yazılmışsa gri, değilse beyaz yapıyoruz
-                bold.style.backgroundColor = activeObject.fontWeight === 'bold' ? 'gray' : 'white';
-                // italik yazma butonunun arka plan rengini, seçilen metin italik yazılmışsa gri, değilse beyaz yapıyoruz
-                italic.style.backgroundColor = activeObject.fontStyle === 'italic' ? 'gray' : 'white';
-                // altı çizili yazma butonunun arka plan rengini, seçilen metin altı çizili yazılmışsa gri, değilse beyaz yapıyoruz
-                underline.style.backgroundColor = activeObject.textDecoration === 'underline' ? 'gray' : 'white';
-                // renk seçme elementini görünür yapıyoruz
-                color.style.display = 'inline';
-                // font seçme elementini görünür yapıyoruz
-                font.style.display = 'inline';
-                // font boyutu seçme elementini görünür yapıyoruz
-                size.style.display = 'inline';
-            } else {
-                // seçilen nesne bir metin nesnesi değilse
-                // renk seçme elementini gizliyoruz
-                color.style.display = 'none';
-                // font seçme elementini gizliyoruz
-                font.style.display = 'none';
-                // font boyutu seçme elementini gizliyoruz
-                size.style.display = 'none';
-            }
-        });
-        // canvas üzerindeki seçim kaldırıldığında çalışacak fonksiyonu tanımlıyoruz
-        canvas.on('selection:cleared', function (e) {
-            // aktif nesne değişkenini sıfırlıyoruz
-            activeObject = null;
-            // renk seçme elementini gizliyoruz
-            color.style.display = 'none';
-            // font seçme elementini gizliyoruz
-            font.style.display = 'none';
-            // font boyutu seçme elementini gizliyoruz
-            size.style.display = 'none';
-        });
-        // renk seçme elementinin değeri değiştiğinde çalışacak fonksiyonu tanımlıyoruz
-        color.onchange = function (e) {
-            // aktif nesne varsa ve bir metin nesnesi ise
-            if (activeObject && activeObject.type === 'text') {
-                //
-                // aktif nesnenin rengini, renk seçme elementinin değeri ile güncelliyoruz
-                activeObject.set('fill', e.target.value);
-                // canvas'ı yeniden çizdiriyoruz
-                canvas.renderAll();
-            }
-        };
-        // font seçme elementinin değeri değiştiğinde çalışacak fonksiyonu tanımlıyoruz
-        font.onchange = function (e) {
-            // aktif nesne varsa ve bir metin nesnesi ise
-            if (activeObject && activeObject.type === 'text') {
-                // aktif nesnenin fontunu, font seçme elementinin değeri ile güncelliyoruz
-                activeObject.set('fontFamily', e.target.value);
-                // canvas'ı yeniden çizdiriyoruz
-                canvas.renderAll();
-            }
-        };
-        // font boyutu seçme elementinin değeri değiştiğinde çalışacak fonksiyonu tanımlıyoruz
-        size.onchange = function (e) {
-            // aktif nesne varsa ve bir metin nesnesi ise
-            if (activeObject && activeObject.type === 'text') {
-                // aktif nesnenin font boyutunu, font boyutu seçme elementinin değeri ile güncelliyoruz
-                activeObject.set('fontSize', e.target.value);
-                // canvas'ı yeniden çizdiriyoruz
-                canvas.renderAll();
-            }
-        };
-        // kalın yazma butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
-        bold.onclick = function (e) {
-            // aktif nesne varsa ve bir metin nesnesi ise
-            if (activeObject && activeObject.type === 'text') {
-                // aktif nesne kalın yazılmışsa
-                if (activeObject.fontWeight === 'bold') {
-                    // aktif nesnenin font ağırlığını normal yapar
-                    activeObject.set('fontWeight', 'normal');
-                    // kalın yazma butonunun arka plan rengini beyaz yapar
-                    bold.style.backgroundColor = 'white';
-                } else {
-                    // aktif nesne kalın yazılmamışsa
-                    // aktif nesnenin font ağırlığını kalın yapar
-                    activeObject.set('fontWeight', 'bold');
-                    // kalın yazma butonunun arka plan rengini gri yapar
-                    bold.style.backgroundColor = 'gray';
+            // dosya seçme elementinin değeri değiştiğinde çalışacak fonksiyonu tanımlıyoruz
+            file.onchange = function (e) {
+                // seçilen ilk dosyayı alıyoruz
+                var file = e.target.files[0];
+                // bir FileReader nesnesi oluşturuyoruz
+                var reader = new FileReader();
+                // dosya okunduğunda çalışacak fonksiyonu tanımlıyoruz
+                reader.onload = function (f) {
+                    // dosyanın içeriğini bir data URL olarak alıyoruz
+                    var data = f.target.result;
+                    // data URL'den bir fabric.Image nesnesi oluşturuyoruz
+                    fabric.Image.fromURL(data, function (img) {
+                        // resmi canvas üzerinde gösteriyoruz
+                        canvas.add(img);
+                        // resmi aktif nesne olarak seçiyoruz
+                        canvas.setActiveObject(img);
+                    });
+                    // dosya seçme elementinin değerini sıfırlıyoruz
+                    file.value = null;
+                };
+                // dosyayı okuyoruz
+                reader.readAsDataURL(file);
+            };
+
+            // daire ekleme butonunu seçiyoruz
+            var addCircle = document.getElementById('add-circle');
+            // daire ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
+            addCircle.onclick = function () {
+                // yeni bir fabric.Circle nesnesi oluşturuyoruz
+                var circle = new fabric.Circle({
+                    // yarıçapını 50 olarak ayarlıyoruz
+                    radius: 50,
+                    // rengini mavi olarak ayarlıyoruz
+                    fill: 'blue',
+                    // sol üst köşesinin konumunu rastgele olarak ayarlıyoruz
+                    left: Math.random() * 500,
+                    top: Math.random() * 200
+                });
+                // bu nesneyi canvas'a ekliyoruz
+                canvas.add(circle);
+                // bu nesneyi aktif nesne olarak seçiyoruz
+                canvas.setActiveObject(circle);
+            };
+
+            // kare ekleme butonunu seçiyoruz
+            var addSquare = document.getElementById('add-square');
+            // kare ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
+            addSquare.onclick = function () {
+                // yeni bir fabric.Rect nesnesi oluşturuyoruz
+                var square = new fabric.Rect({
+                    // genişliğini ve yüksekliğini 100 olarak ayarlıyoruz
+                    width: 100,
+                    height: 100,
+                    // rengini kırmızı olarak ayarlıyoruz
+                    fill: 'red',
+                    // sol üst köşesinin konumunu rastgele olarak ayarlıyoruz
+                    left: Math.random() * 500,
+                    top: Math.random() * 200
+                });
+                // bu nesneyi canvas'a ekliyoruz
+                canvas.add(square);
+                // bu nesneyi aktif nesne olarak seçiyoruz
+                canvas.setActiveObject(square);
+            };
+
+            // elips ekleme butonunu seçiyoruz
+            var addEllipse = document.getElementById('add-ellipse');
+            // elips ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
+            addEllipse.onclick = function () {
+                // yeni bir fabric.Ellipse nesnesi oluşturuyoruz
+                var ellipse = new fabric.Ellipse({
+                    // yatay ve dikey yarıçaplarını 80 ve 40 olarak ayarlıyoruz
+                    rx: 80,
+                    ry: 40,
+                    // rengini yeşil olarak ayarlıyoruz
+                    fill: 'green',
+                    // sol üst köşesinin konumunu rastgele olarak ayarlıyoruz
+                    left: Math.random() * 500,
+                    top: Math.random() * 200
+                });
+                // bu nesneyi canvas'a ekliyoruz
+                canvas.add(ellipse);
+                // bu nesneyi aktif nesne olarak seçiyoruz
+                canvas.setActiveObject(ellipse);
+            };
+
+            // yıldız ekleme butonunu seçiyoruz
+            var addStar = document.getElementById('add-star');
+            // yıldız ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
+            addStar.onclick = function () {
+                // yeni bir fabric.Polygon nesnesi oluşturuyoruz
+                var star = new fabric.Polygon([
+                    // yıldızın köşelerinin konumlarını belirliyoruz
+                    { x: 350, y: 75 },
+                    { x: 380, y: 160 },
+                    { x: 470, y: 160 },
+                    { x: 400, y: 215 },
+                    { x: 423, y: 301 },
+                    { x: 350, y: 250 },
+                    { x: 277, y: 301 },
+                    { x: 303, y: 215 },
+                    { x: 231, y: 161 },
+                    { x: 321, y: 161 }
+                ], {
+                    // rengini sarı olarak ayarlıyoruz
+                    fill: 'yellow',
+                    // sol üst köşesinin konumunu rastgele olarak ayarlıyoruz
+                    left: Math.random() * 500,
+                    top: Math.random() * 200
+                });
+                // bu nesneyi canvas'a ekliyoruz
+                canvas.add(star);
+                // bu nesneyi aktif nesne olarak seçiyoruz
+                canvas.setActiveObject(star);
+            };
+
+            // dikdörtgen ekleme butonunu seçiyoruz
+            var addRectangle = document.getElementById('add-rectangle');
+            //        // dikdörtgen ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
+            addRectangle.onclick = function () {
+                // yeni bir fabric.Rect nesnesi oluşturuyoruz
+                var rectangle = new fabric.Rect({
+                    // genişliğini 200 ve yüksekliğini 100 olarak ayarlıyoruz
+                    width: 200,
+                    height: 100,
+                    // rengini mor olarak ayarlıyoruz
+                    fill: 'purple',
+                    // sol üst köşesinin konumunu rastgele olarak ayarlıyoruz
+                    left: Math.random() * 500,
+                    top: Math.random() * 200
+                });
+                // bu nesneyi canvas'a ekliyoruz
+                canvas.add(rectangle);
+                // bu nesneyi aktif nesne olarak seçiyoruz
+                canvas.setActiveObject(rectangle);
+            };
+
+            // çokgen ekleme butonunu seçiyoruz
+            var addPolygon = document.getElementById('add-polygon');
+            // çokgen ekleme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
+            addPolygon.onclick = function () {
+                // yeni bir fabric.Polygon nesnesi oluşturuyoruz
+                var polygon = new fabric.Polygon([
+                    // çokgenin köşelerinin konumlarını belirliyoruz
+                    { x: 200, y: 0 },
+                    { x: 250, y: 50 },
+                    { x: 250, y: 100 },
+                    { x: 150, y: 100 },
+                    { x: 150, y: 50 }
+                ], {
+                    // rengini turuncu olarak ayarlıyoruz
+                    fill: 'orange',
+                    // sol üst köşesinin konumunu rastgele olarak ayarlıyoruz
+                    left: Math.random() * 500,
+                    top: Math.random() * 200
+                });
+                // bu nesneyi canvas'a ekliyoruz
+                canvas.add(polygon);
+                // bu nesneyi aktif nesne olarak seçiyoruz
+                canvas.setActiveObject(polygon);
+            };
+
+            // metin boyutu seçme elementini seçiyoruz
+            var textSize = document.getElementById('text-size');
+            // metin boyutu seçme elementinin değeri değiştiğinde çalışacak fonksiyonu tanımlıyoruz
+            textSize.onchange = function (e) {
+                // aktif nesne varsa ve bir metin nesnesi ise
+                if (activeObject && activeObject.type === 'text') {
+                    // aktif nesnenin font boyutunu, metin boyutu seçme elementinin değeri ile güncelliyoruz
+                    activeObject.set('fontSize', e.target.value);
+                    // canvas'ı yeniden çizdiriyoruz
+                    canvas.renderAll();
                 }
-                // canvas'ı yeniden çizdirir
-                canvas.renderAll();
-            }
-        };
-        // italik yazma butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
-        italic.onclick = function (e) {
-            // aktif nesne varsa ve bir metin nesnesi ise
-            if (activeObject && activeObject.type === 'text') {
-                // aktif nesne italik yazılmışsa
-                if (activeObject.fontStyle === 'italic') {
-                    // aktif nesnenin font stilini normal yapar
-                    activeObject.set('fontStyle', 'normal');
-                    // italik yazma butonunun arka plan rengini beyaz yapar
-                    italic.style.backgroundColor = 'white';
-                } else {
-                    // aktif nesne italik yazılmamışsa
-                    // aktif nesnenin font stilini italik yapar
-                    activeObject.set('fontStyle', 'italic');
-                    // italik yazma butonunun arka plan rengini gri yapar
-                    italic.style.backgroundColor = 'gray';
-                }
-                // canvas'ı yeniden çizdirir
-                canvas.renderAll();
-            }
-        };
-        // altı çizili yazma butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
-        underline.onclick = function (e) {
-            // aktif nesne varsa ve bir metin nesnesi ise
-            if (activeObject && activeObject.type === 'text') {
-                // aktif nesne altı çizili yazılmışsa
-                if (activeObject.textDecoration === 'underline') {
-                    // aktif nesnenin metin dekorasyonunu boş yapar
-                    activeObject.set('textDecoration', '');
-                    // altı çizili yazma butonunun arka plan rengini beyaz yapar
-                    underline.style.backgroundColor = 'white';
-                } else {
-                    // aktif nesne altı çizili yazılmamışsa
-                    // aktif nesnenin metin dekorasyonunu altı çizili yapar
-                    activeObject.set('textDecoration', 'underline');
-                    // altı çizili yazma butonunun arka plan rengini gri yapar
-                    underline.style.backgroundColor = 'gray';
-                }
-                // canvas'ı yeniden çizdirir
-                canvas.renderAll();
-            }
-        };
-        // silme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
-        deleteBtn.onclick = function (e) {
-            // aktif nesne varsa
-            if (activeObject) {
-                // aktif nesneyi canvas'tan kaldırıyoruz
-                canvas.remove(activeObject);
-                // aktif nesne değişkenini sıfırlıyoruz
-                activeObject = null;
-            }
-        };
-        // indirme butonuna tıkladığımızda çalışacak fonksiyonu tanımlıyoruz
-        download.onclick = function (e) {
-            // canvas'ın içeriğini bir data URL olarak dönüştürüyoruz
-            var dataURL = canvas.toDataURL({
-                format: 'png',
-                quality: 1
-            });
-            // bir a elementi oluşturuyoruz
-            var link = document.createElement('a');
-            // a elementinin href özelliğine data URL'yi atıyoruz
-            link.href = dataURL;
-            // a elementinin download özelliğine indirilecek dosyanın adını belirliyoruz
-            link.download = 'image.png';
-            // a elementini belgeye ekliyoruz
-            document.body.appendChild(link);
-            // a elementine tıklıyoruz
-            link.click();
-            // a elementini belgeden kaldırıyoruz
-            document.body.removeChild(link);
-        };
-    </script>
+            };
+            //================== Add Text  ================
+            var addText = document.getElementById("addText");
+            addText.addEventListener('click', function () {
+                canvasInstances.forEach(function (current, id, array) {
+                    if (id === array.length - 1) {
+                        const converText = new fabric.IText(`Type Text`, {
+                            type: 'text',
+                            width: 200,
+                            fontSize: 20,
+                            left: 20,
+                            top: 20,
+                            fill: '#444'
+                        });
+
+                        current.add(converText);
+                        current.renderAll();
+                        return false;
+                    }
+                })
+            })
+        </script>
 </body>
 
 </html>
